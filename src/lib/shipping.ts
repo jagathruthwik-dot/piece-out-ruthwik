@@ -420,7 +420,8 @@ function nextPickupSlot() {
     const hour = Number(
       new Intl.DateTimeFormat("en-US", { timeZone: tz, hour: "2-digit", hourCycle: "h23" }).format(cursor),
     );
-    const closed = weekday === "Sun" || (i === 0 && hour >= 16);
+    // Pickup window on the Delhivery account is 2–6 pm: same day if asked before 1 pm.
+    const closed = weekday === "Sun" || (i === 0 && hour >= 13);
     if (!closed) {
       const parts = new Intl.DateTimeFormat("en-CA", {
         timeZone: tz,
@@ -431,7 +432,7 @@ function nextPickupSlot() {
       const get = (type: string) => parts.find((part) => part.type === type)?.value ?? "";
       return {
         date: `${get("year")}-${get("month")}-${get("day")}`,
-        time: i === 0 ? "17:00:00" : "11:00:00",
+        time: i === 0 ? "15:00:00" : "14:00:00",
       };
     }
     cursor.setUTCDate(cursor.getUTCDate() + 1);
